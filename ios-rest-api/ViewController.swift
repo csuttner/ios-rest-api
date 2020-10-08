@@ -10,13 +10,23 @@ import UIKit
 
     let DomainURL = "https://www.orangevalleycaa.org/api/"
     
-    class User {
+    class Music: Codable {
         
+        let id: String?
+        let music_url: String?
+        let name: String?
+        let description: String?
+            
         static func fetch(id: Int){
             let URLstring = DomainURL + "music/id/\(id)"
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url) { data, _, _ in
-                    print(String.init(data: data!, encoding: .ascii) ?? "no data")
+                    if let newMusic = try? JSONDecoder().decode(Music.self, from: data!) {
+                        print(newMusic.id ?? "no id")
+                        print(newMusic.music_url ?? "no url")
+                        print(newMusic.name ?? "name")
+                        print(newMusic.description ?? "no description")
+                    }
                 }
                 task.resume()
             }
@@ -31,7 +41,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        User.fetch(id: 1)
+        Music.fetch(id: 1)
     }
 
 
