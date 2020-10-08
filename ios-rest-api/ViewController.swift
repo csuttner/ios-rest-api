@@ -8,16 +8,16 @@
 
 import UIKit
 
-    let DomainURL = "http://216.186.69.45/services/device/"
+    let DomainURL = "https://www.orangevalleycaa.org/api/"
     
     class User {
         
-        static func fetch(){
-            let URLstring = DomainURL + "users/"
+        static func fetch(id: Int){
+            let URLstring = DomainURL + "music/id/\(id)"
             if let url = URL.init(string: URLstring){
-                let task = URLSession.shared.dataTask(with: url, completionHandler:
-                    //TODO: Add closure
-                )
+                let task = URLSession.shared.dataTask(with: url) { data, _, _ in
+                    print(String.init(data: data!, encoding: .ascii) ?? "no data")
+                }
                 task.resume()
             }
         }
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        User.fetch()
+        User.fetch(id: 1)
     }
 
 
